@@ -19,7 +19,7 @@ pub fn extract_task(page_html: &str, lang: Lang) -> Result<ExtractedTask> {
         .context("`#task-statement` was not found")?;
 
     let title = extract_title(&doc).unwrap_or_else(|| "AtCoder Task".to_string());
-    let limits = extract_limits(&doc);
+    let limits = extract_limits(&doc, lang);
 
     let lang_selector = match lang {
         Lang::Ja => "span.lang-ja",
@@ -73,17 +73,28 @@ fn extract_title(doc: &Html) -> Option<String> {
     if title.is_empty() { None } else { Some(title) }
 }
 
-fn extract_limits(doc: &Html) -> Option<String> {
+fn extract_limits(doc: &Html, lang: Lang) -> Option<String> {
     let p_sel = Selector::parse("p").expect("valid selector");
     for p in doc.select(&p_sel) {
         let text = normalize_spaces(&p.text().collect::<Vec<_>>().join(" "));
         let is_ja = text.contains("実行時間制限") && text.contains("メモリ制限");
         let is_en = text.contains("Time Limit") && text.contains("Memory Limit");
         if is_ja || is_en {
-            return Some(text);
+            return Some(localize_limits(&text, lang));
         }
     }
     None
+}
+
+fn localize_limits(text: &str, lang: Lang) -> String {
+    match lang {
+        Lang::Ja => text
+            .replace("Time Limit", "実行時間制限")
+            .replace("Memory Limit", "メモリ制限"),
+        Lang::En => text
+            .replace("実行時間制限", "Time Limit")
+            .replace("メモリ制限", "Memory Limit"),
+    }
 }
 
 fn normalize_spaces(input: &str) -> String {
@@ -123,6 +134,10 @@ mod tests {
     #[test]
     fn extract_en_block() {
         let out = extract_task(FIXTURE, Lang::En).expect("must extract");
+        assert_eq!(
+            out.limits.as_deref(),
+            Some("Time Limit: 2 sec / Memory Limit: 1024 MiB")
+        );
         assert!(out.statement_html.contains("BodyEN"));
         assert!(!out.statement_html.contains("本文JA"));
     }
