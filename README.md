@@ -2,7 +2,7 @@
 
 Terminal viewer for AtCoder problem pages with Markdown-like rendering.
 
-![atv demo](./atv.gif)
+![atv demo](./atv-2.gif)
 
 ## Install
 
