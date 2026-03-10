@@ -17,13 +17,13 @@ cargo install --git https://github.com/hxrxchang/atcoder-tui-viewer --bin atv --
 ## Usage
 
 ```bash
-atv view "https://atcoder.jp/contests/abc357/tasks/abc357_d"
+atv "https://atcoder.jp/contests/abc357/tasks/abc357_d"
 ```
 
 English:
 
 ```bash
-atv view "https://atcoder.jp/contests/abc357/tasks/abc357_d" --lang en
+atv "https://atcoder.jp/contests/abc357/tasks/abc357_d" --lang en
 ```
 
 ## Keys

@@ -6,7 +6,7 @@ mod tui;
 use std::panic::{AssertUnwindSafe, catch_unwind};
 
 use anyhow::{Context, Result};
-use clap::{Parser, Subcommand, ValueEnum};
+use clap::{Parser, ValueEnum};
 
 #[derive(Debug, Clone, Copy, ValueEnum)]
 enum Lang {
@@ -17,29 +17,16 @@ enum Lang {
 #[derive(Debug, Parser)]
 #[command(name = "atv", version, about = "AtCoder problem viewer in terminal")]
 struct Cli {
-    #[command(subcommand)]
-    command: Commands,
-}
-
-#[derive(Debug, Subcommand)]
-enum Commands {
-    /// Fetch a task page and view as terminal-friendly Markdown.
-    View {
-        /// AtCoder task URL.
-        url: String,
-        /// Language to extract.
-        #[arg(long, value_enum, default_value_t = Lang::Ja)]
-        lang: Lang,
-    },
+    /// AtCoder task URL.
+    url: String,
+    /// Language to extract.
+    #[arg(long, value_enum, default_value_t = Lang::Ja)]
+    lang: Lang,
 }
 
 fn main() -> Result<()> {
     let cli = Cli::parse();
-
-    match cli.command {
-        Commands::View { url, lang } => run_view(&url, lang)?,
-    }
-
+    run_view(&cli.url, cli.lang)?;
     Ok(())
 }
 
