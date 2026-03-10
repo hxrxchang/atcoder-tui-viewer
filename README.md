@@ -1,6 +1,6 @@
 # atcoder-tui-viewer
 
-Terminal viewer for AtCoder task pages with Markdown-like rendering.
+Terminal viewer for AtCoder problem pages with Markdown-like rendering.
 
 ## Install
 
@@ -17,13 +17,13 @@ cargo install --git https://github.com/hxrxchang/atcoder-tui-viewer --bin atv --
 ## Usage
 
 ```bash
-cargo run -- view "https://atcoder.jp/contests/abc357/tasks/abc357_d"
+atv view "https://atcoder.jp/contests/abc357/tasks/abc357_d"
 ```
 
 English:
 
 ```bash
-cargo run -- view "https://atcoder.jp/contests/abc357/tasks/abc357_d" --lang en
+atv view "https://atcoder.jp/contests/abc357/tasks/abc357_d" --lang en
 ```
 
 ## Keys
